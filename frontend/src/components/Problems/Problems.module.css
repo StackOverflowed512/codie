@@ -1,0 +1,316 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+    background-color: var(--background-color, #fff);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.header h1 {
+    font-size: 24px;
+    color: var(--text-color, #262626);
+    font-weight: 600;
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.filters {
+    display: flex;
+    gap: 12px;
+}
+
+.filterSelect {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color, #e8e8e8);
+    border-radius: 8px;
+    background-color: var(--background-color, white);
+    color: var(--text-color, #262626);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filterSelect:hover {
+    border-color: var(--primary-color, #1890ff);
+}
+
+.filterSelect:focus {
+    outline: none;
+    border-color: var(--primary-color, #1890ff);
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.tableWrapper {
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Update table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    table-layout: fixed;
+}
+
+th {
+    background-color: #f7f9fa;
+    color: #262626;
+    font-weight: 500;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+/* Column widths */
+.statusColumn {
+    width: 60px;
+}
+
+.titleColumn {
+    width: 50%;
+}
+
+.problemRow {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.problemRow:hover {
+    background-color: #f7f9fa;
+}
+
+.problemRow td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color, #e8e8e8);
+    font-size: 14px;
+    color: var(--text-color, #262626);
+}
+
+.statusCell {
+    text-align: center;
+}
+
+.solvedIcon {
+    color: #00b8a3;
+    font-size: 18px;
+}
+
+.titleCell {
+    color: var(--text-color, #262626) !important;
+    font-weight: 500;
+}
+
+.problemTitle {
+    color: var(--text-color, #262626);
+}
+
+.difficulty {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    width: 100px;
+}
+
+.easy {
+    color: #00b8a3;
+    background-color: rgba(0, 184, 163, 0.1);
+}
+
+.medium {
+    color: #ffa116;
+    background-color: rgba(255, 161, 22, 0.1);
+}
+
+.hard {
+    color: #ff375f;
+    background-color: rgba(255, 55, 95, 0.1);
+}
+
+.acceptanceRate {
+    color: var(--text-color, #262626);
+    font-size: 13px;
+    text-align: center;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+    padding: 16px 0;
+}
+
+.pageButton {
+    padding: 8px 16px;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    background-color: white;
+    color: #262626;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.pageButton:hover:not(:disabled) {
+    background-color: #f7f9fa;
+    border-color: #d1d1d1;
+}
+
+.pageButton:disabled {
+    background-color: #f7f9fa;
+    color: #9999;
+    cursor: not-allowed;
+}
+
+.pageInfo {
+    color: #262626;
+    font-size: 14px;
+}
+
+.checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #00b8a3;
+}
+
+.pageForm {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pageInput {
+    width: 80px;
+    padding: 8px;
+    border: 1px solid var(--border-color, #e8e8e8);
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+    background-color: var(--background-color, white);
+    color: var(--text-color, #262626);
+}
+
+.pageInput:focus {
+    outline: none;
+    border-color: var(--primary-color, #1890ff);
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.pageGoButton {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color, #e8e8e8);
+    border-radius: 8px;
+    background-color: var(--background-color, white);
+    color: var(--text-color, #262626);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.pageGoButton:hover {
+    border-color: var(--primary-color, #1890ff);
+    color: var(--primary-color, #1890ff);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 16px;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+    }
+
+    .filters {
+        width: 100%;
+    }
+
+    .filterSelect {
+        flex: 1;
+    }
+
+    .titleColumn {
+        width: auto;
+    }
+}
+
+/* Add dark theme variables */
+[data-theme="dark"] {
+    --text-color: #ffffff;
+    --border-color: #3e3e3e;
+    --background-color: #1a1a1a;
+
+    & .container,
+    & .problemList {
+        background-color: var(--background-color);
+    }
+
+    & table {
+        background-color: var(--background-color);
+    }
+
+    & .problemRow:hover {
+        background-color: #2d2d2d;
+    }
+
+    & th {
+        background-color: #2d2d2d;
+        color: var(--text-color);
+        border-color: var(--border-color);
+    }
+
+    & .titleCell,
+    & .problemTitle,
+    & .acceptanceRate {
+        color: var(--text-color);
+    }
+
+    & .header h1 {
+        color: var(--text-color);
+    }
+
+    & .filterSelect {
+        background-color: #2d2d2d;
+        color: var(--text-color);
+        border-color: var(--border-color);
+    }
+
+    & .filterSelect:hover {
+        border-color: var(--primary-color, #1890ff);
+    }
+
+    & .pageInput,
+    & .pageGoButton {
+        background-color: #2d2d2d;
+        color: var(--text-color);
+        border-color: var(--border-color);
+    }
+
+    & .pageInput::placeholder {
+        color: #666;
+    }
+
+    & .pageGoButton:hover {
+        border-color: var(--primary-color, #1890ff);
+        color: var(--primary-color, #1890ff);
+    }
+}
