@@ -1,62 +1,82 @@
 .authContainer {
   max-width: 400px;
-  margin: 2rem auto;
+  margin: 5rem auto;
   padding: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  color: #ffffff;
 }
 
 .authContainer h2 {
-  text-align: center;
   margin-bottom: 1.5rem;
-  color: #333;
+  font-size: 1.8rem;
 }
 
 .formGroup {
   margin-bottom: 1rem;
+  text-align: left;
 }
 
 .formGroup label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
+  color: #ffffff;
 }
 
 .formGroup input {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 6px;
   font-size: 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  outline: none;
+}
+
+.formGroup input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .submitButton {
   width: 100%;
   padding: 0.75rem;
-  background-color: #007bff;
+  background: linear-gradient(90deg, #ff9800, #ff5722);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
   margin-top: 1rem;
+  transition: background 0.3s ease-in-out;
 }
 
 .submitButton:hover {
-  background-color: #0056b3;
+  background: linear-gradient(90deg, #ff5722, #ff9800);
 }
 
 .error {
-  color: #dc3545;
+  color: #ff4c4c;
+  font-size: 0.9rem;
   margin-bottom: 1rem;
-  text-align: center;
+}
+
+body {
+  background: url('https://plus.unsplash.com/premium_photo-1661963435646-73b565fb724c?q=80&w=2087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')
+    no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Poppins', sans-serif;
 }
 
 .navbar {
-  background-color: #f8f9fa;
+  background: rgba(0, 0, 0, 0.8);
   padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .navContainer {
@@ -70,7 +90,7 @@
 .navBrand {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #333;
+  color: #ff9800;
   text-decoration: none;
 }
 
@@ -80,23 +100,26 @@
 }
 
 .navLink {
-  color: #333;
+  color: white;
   text-decoration: none;
   padding: 0.5rem 1rem;
+  transition: color 0.3s ease-in-out;
 }
 
 .navLink:hover {
-  color: #007bff;
+  color: #ff9800;
 }
 
 .navButton {
   background: none;
   border: none;
-  color: #333;
+  color: white;
   cursor: pointer;
   padding: 0.5rem 1rem;
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
 }
 
 .navButton:hover {
-  color: #007bff;
+  color: #ff9800;
 }

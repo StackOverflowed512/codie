@@ -38,76 +38,156 @@ const ProblemDetail = () => {
         return <div className={styles.notFound}>Problem not found</div>;
 
     return (
-        <div className={styles.problemDetail}>
-            <div className={styles.header}>
-                <h1>{problem.title}</h1>
-                <div className={styles.metadata}>
-                    <span
-                        className={`${styles.difficulty} ${
-                            styles[problem.difficulty.toLowerCase()]
-                        }`}
-                    >
-                        {problem.difficulty}
-                    </span>
-                    {problem.acceptance_rate && (
-                        <span className={styles.acceptanceRate}>
-                            Acceptance: {problem.acceptance_rate.toFixed(1)}%
+        <div className={styles.container}>
+            <div className={styles.problemDetail}>
+                <div className={styles.header}>
+                    <h1>{problem.title}</h1>
+                    <div className={styles.metadata}>
+                        <span
+                            className={`${styles.difficulty} ${
+                                styles[problem.difficulty.toLowerCase()]
+                            }`}
+                        >
+                            {problem.difficulty}
                         </span>
-                    )}
+                        {problem.acceptance_rate && (
+                            <span className={styles.acceptanceRate}>
+                                Acceptance: {problem.acceptance_rate.toFixed(1)}
+                                %
+                            </span>
+                        )}
+                    </div>
                 </div>
-            </div>
 
-            <div className={styles.content}>
-                <div className={styles.description}>
-                    {problem.description.split("\n").map((paragraph, index) => {
-                        if (paragraph.trim().startsWith("```")) {
-                            // Handle code blocks
-                            return (
-                                <pre key={index}>
-                                    <code>
-                                        {paragraph.replace(/```/g, "").trim()}
-                                    </code>
-                                </pre>
-                            );
-                        } else if (paragraph.includes("`")) {
-                            // Handle inline code
-                            return (
-                                <p key={index}>
-                                    {paragraph
-                                        .split("`")
-                                        .map((part, i) =>
-                                            i % 2 === 0 ? (
-                                                part
-                                            ) : (
-                                                <code key={i}>{part}</code>
+                <div className={styles.content}>
+                    {/* Problem Statement Section */}
+                    <section className={styles.section}>
+                        <h2 className={styles.sectionTitle}>
+                            Problem Statement
+                        </h2>
+                        <div className={styles.description}>
+                            {problem.description
+                                .split("\n")
+                                .map((paragraph, index) => {
+                                    if (paragraph.trim().startsWith("```")) {
+                                        return (
+                                            <pre key={index}>
+                                                <code>
+                                                    {paragraph
+                                                        .replace(/```/g, "")
+                                                        .trim()}
+                                                </code>
+                                            </pre>
+                                        );
+                                    } else if (paragraph.includes("`")) {
+                                        return (
+                                            <p key={index}>
+                                                {paragraph
+                                                    .split("`")
+                                                    .map((part, i) =>
+                                                        i % 2 === 0 ? (
+                                                            part
+                                                        ) : (
+                                                            <code key={i}>
+                                                                {part}
+                                                            </code>
+                                                        )
+                                                    )}
+                                            </p>
+                                        );
+                                    }
+                                    return <p key={index}>{paragraph}</p>;
+                                })}
+                        </div>
+                    </section>
+
+                    {/* Examples Section */}
+                    {problem.examples && problem.examples.length > 0 && (
+                        <section className={styles.section}>
+                            <h2 className={styles.sectionTitle}>Examples</h2>
+                            <div className={styles.examples}>
+                                {problem.examples.map((example, i) => (
+                                    <div key={i} className={styles.example}>
+                                        <h4>Example {i + 1}:</h4>
+                                        <div className={styles.exampleContent}>
+                                            {example.input && (
+                                                <div
+                                                    className={
+                                                        styles.exampleItem
+                                                    }
+                                                >
+                                                    <span>Input:</span>
+                                                    <pre>{example.input}</pre>
+                                                </div>
+                                            )}
+                                            {example.output && (
+                                                <div
+                                                    className={
+                                                        styles.exampleItem
+                                                    }
+                                                >
+                                                    <span>Output:</span>
+                                                    <pre>{example.output}</pre>
+                                                </div>
+                                            )}
+                                            {example.explanation && (
+                                                <div
+                                                    className={
+                                                        styles.exampleItem
+                                                    }
+                                                >
+                                                    <span>Explanation:</span>
+                                                    <p>{example.explanation}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {/* Constraints Section */}
+                    {problem.constraints && problem.constraints.length > 0 && (
+                        <section className={styles.section}>
+                            <h2 className={styles.sectionTitle}>Constraints</h2>
+                            <div className={styles.constraints}>
+                                <ul>
+                                    {problem.constraints.map(
+                                        (constraint, i) => (
+                                            <li key={i}>{constraint}</li>
+                                        )
+                                    )}
+                                </ul>
+                            </div>
+                        </section>
+                    )}
+
+                    {/* Similar Problems Section */}
+                    {problem.similar_questions &&
+                        problem.similar_questions.length > 0 && (
+                            <section className={styles.section}>
+                                <h2 className={styles.sectionTitle}>
+                                    Similar Problems
+                                </h2>
+                                <div className={styles.similarProblems}>
+                                    <ul>
+                                        {problem.similar_questions.map(
+                                            (question, index) => (
+                                                <li key={index}>
+                                                    <a
+                                                        href={`/problems/${question[1]}`}
+                                                    >
+                                                        {question[0]}
+                                                    </a>
+                                                </li>
                                             )
                                         )}
-                                </p>
-                            );
-                        }
-                        return <p key={index}>{paragraph}</p>;
-                    })}
+                                    </ul>
+                                </div>
+                            </section>
+                        )}
                 </div>
-
-                {problem.similar_questions &&
-                    problem.similar_questions.length > 0 && (
-                        <div className={styles.similarProblems}>
-                            <h3>Similar Questions</h3>
-                            <ul>
-                                {problem.similar_questions.map(
-                                    (question, index) => (
-                                        <li key={index}>
-                                            <a
-                                                href={`/problems/${question[1]}`}
-                                            >
-                                                {question[0]}
-                                            </a>
-                                        </li>
-                                    )
-                                )}
-                            </ul>
-                        </div>
-                    )}
             </div>
         </div>
     );

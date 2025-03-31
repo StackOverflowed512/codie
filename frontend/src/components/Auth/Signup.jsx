@@ -32,6 +32,7 @@ const Signup = () => {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
+                        placeholder="Choose a username"
                     />
                 </div>
                 <div className={styles.formGroup}>
@@ -41,6 +42,7 @@ const Signup = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        placeholder="Enter your email"
                     />
                 </div>
                 <div className={styles.formGroup}>
@@ -50,6 +52,7 @@ const Signup = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        placeholder="Create a password"
                     />
                 </div>
                 <button type="submit" className={styles.submitButton}>
