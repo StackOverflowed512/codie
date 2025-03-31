@@ -4,19 +4,45 @@ import AuthContext from "../../context/AuthContext";
 import styles from "./Problems.module.css";
 import DarkModeSwitch from "../common/DarkModeSwitch";
 
-const fetchProblems = async (page) => {
+const fetchProblems = async (page, difficulty, status) => {
     try {
-        const response = await fetch(
-            `http://localhost:5000/api/problems?page=${page}`
-        );
+        const url = new URL(`http://localhost:5000/api/problems`);
+        url.searchParams.append("page", page);
+        if (difficulty !== "All") {
+            url.searchParams.append("difficulty", difficulty);
+        }
+        if (status && status !== "All") {
+            url.searchParams.append("status", status.toLowerCase());
+        }
+
+        const response = await fetch(url);
         if (!response.ok) {
             throw new Error("Failed to fetch problems");
         }
-        const data = await response.json();
-        return data;
+        return await response.json();
     } catch (error) {
         console.error("Error fetching problems:", error);
         return { problems: [], total_pages: 0, current_page: 1 };
+    }
+};
+
+const fetchCompletedProblems = async () => {
+    try {
+        const response = await fetch(
+            "http://localhost:5000/api/problems/completed",
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            }
+        );
+        if (response.ok) {
+            return await response.json();
+        }
+        return [];
+    } catch (error) {
+        console.error("Error fetching completed problems:", error);
+        return [];
     }
 };
 
@@ -28,51 +54,41 @@ const ProblemList = () => {
     const [error, setError] = useState("");
     const [completedProblems, setCompletedProblems] = useState(new Set());
     const [selectedDifficulty, setSelectedDifficulty] = useState("All");
+    const [selectedStatus, setSelectedStatus] = useState("All");
     const [pageInput, setPageInput] = useState("");
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
 
-    // Load completed problems when component mounts
     useEffect(() => {
-        const fetchCompletedProblems = async () => {
-            try {
-                const response = await fetch(
-                    "http://localhost:5000/api/problems/completed",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                                "token"
-                            )}`,
-                        },
-                    }
-                );
-                if (response.ok) {
-                    const data = await response.json();
-                    setCompletedProblems(new Set(data));
-                }
-            } catch (error) {
-                console.error("Error fetching completed problems:", error);
+        const loadCompletedProblems = async () => {
+            if (user) {
+                const completed = await fetchCompletedProblems();
+                setCompletedProblems(new Set(completed));
             }
         };
-
-        if (user) {
-            fetchCompletedProblems();
-        }
+        loadCompletedProblems();
     }, [user]);
 
     useEffect(() => {
         const loadProblems = async () => {
             setLoading(true);
-            const data = await fetchProblems(currentPage);
-            setProblems(data.problems);
-            setTotalPages(data.total_pages);
-            setLoading(false);
+            try {
+                const data = await fetchProblems(
+                    currentPage,
+                    selectedDifficulty,
+                    selectedStatus
+                );
+                setProblems(data.problems);
+                setTotalPages(data.total_pages);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
         };
-
         loadProblems();
-    }, [currentPage]);
+    }, [currentPage, selectedDifficulty, selectedStatus]);
 
-    // Handle checkbox change
     const handleCheckboxChange = async (event, problemId) => {
         event.stopPropagation();
 
@@ -107,15 +123,12 @@ const ProblemList = () => {
                     }
                     return newSet;
                 });
-            } else {
-                console.error("Failed to update problem status");
             }
         } catch (error) {
             console.error("Error updating problem status:", error);
         }
     };
 
-    // Handle row click
     const handleRowClick = (problemId, event) => {
         if (event.target.type !== "checkbox") {
             navigate(`/problems/${problemId}`);
@@ -130,6 +143,12 @@ const ProblemList = () => {
 
     const handleDifficultyChange = (event) => {
         setSelectedDifficulty(event.target.value);
+        setCurrentPage(1);
+    };
+
+    const handleStatusChange = (event) => {
+        setSelectedStatus(event.target.value);
+        setCurrentPage(1);
     };
 
     const handlePageInputChange = (e) => {
@@ -145,13 +164,8 @@ const ProblemList = () => {
         }
     };
 
-    const filteredProblems = problems.filter((problem) => {
-        if (selectedDifficulty === "All") return true;
-        return problem.difficulty === selectedDifficulty;
-    });
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
+    if (loading) return <div className={styles.loading}>Loading...</div>;
+    if (error) return <div className={styles.error}>{error}</div>;
 
     return (
         <div className={styles.container}>
@@ -171,10 +185,15 @@ const ProblemList = () => {
                                 <option value="Medium">Medium</option>
                                 <option value="Hard">Hard</option>
                             </select>
-                            <select className={styles.filterSelect}>
-                                <option>Status</option>
-                                <option>Todo</option>
-                                <option>Solved</option>
+                            <select
+                                className={styles.filterSelect}
+                                value={selectedStatus}
+                                onChange={handleStatusChange}
+                                disabled={!user}
+                            >
+                                <option value="All">All Status</option>
+                                <option value="Solved">Solved</option>
+                                <option value="Unsolved">Unsolved</option>
                             </select>
                         </div>
                     </div>
@@ -191,7 +210,7 @@ const ProblemList = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredProblems.map((problem) => (
+                            {problems.map((problem) => (
                                 <tr
                                     key={problem.id}
                                     onClick={(e) =>
